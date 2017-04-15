@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xy.snoweffect.view.SnowEffectFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_FFFFFFFF"
+    tools:context="com.xy.snoweffect.activity.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="撒圖的基礎數量："
+                    android:textColor="@color/color_FF000000" />
+
+                <EditText
+                    android:id="@+id/edit_snow_basic_count"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="例如：3, 5, 8...(20)"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="動畫平均持續時間："
+                    android:textColor="@color/color_FF000000" />
+
+                <EditText
+                    android:id="@+id/edit_drop_duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="時間為ms(18000)"
+                    android:inputType="number" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
+            android:stretchColumns="*">
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/button_clean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="3"
+                    android:text="清除參數" />
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/button_start_sakura_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="撒櫻花" />
+
+                <Button
+                    android:id="@+id/button_start_snow_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="撒雪花" />
+
+                <Button
+                    android:id="@+id/button_start_gold_ingot_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="撒元寶" />
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/button_start_coin_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="撒金幣" />
+
+                <Button
+                    android:id="@+id/button_start_red_envelope_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="撒紅包" />
+
+                <Button
+                    android:id="@+id/button_start_mix_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="混合動畫" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</com.xy.snoweffect.view.SnowEffectFrameLayout>
