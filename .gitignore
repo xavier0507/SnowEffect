@@ -7,5 +7,5 @@
 /build
 /captures
 .externalNativeBuild
-xavier_yin.jks
+xyandroidkey.jks
 build_keystore_config.gradle
