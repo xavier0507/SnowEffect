@@ -1,6 +1,7 @@
 package com.xy.snoweffect.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.percent.PercentFrameLayout;
@@ -10,8 +11,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
@@ -47,18 +46,16 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
     }
 
     public SnowEffectFrameLayout(Context context) {
-        super(context);
-        this.init();
+        this(context, null);
     }
 
     public SnowEffectFrameLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.init();
+        this(context, attrs, 0);
     }
 
     public SnowEffectFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.init();
+        this.init(context, attrs);
     }
 
     public void addDrawable(int drawableResId) {
@@ -79,30 +76,20 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
 
     public void startEffect() {
         this.initSnowPool();
-
-        RandomTool.setSeed(10);
-        this.windowHeight = this.getHeight();
-
-        Log.i(TAG, "snowBasicCount: " + this.snowBasicCount);
-        Log.i(TAG, "dropAverageDuration: " + this.dropAverageDuration);
-        Log.i(TAG, "dropFrequency: " + this.dropFrequency);
-
-        ImageView snow;
-        while (((snow = this.snowPool.acquire()) != null)) {
-            this.startDropAnimationForSingleSnow(snow);
-        }
+        this.launchAnim();
     }
 
     private int dip2px(float dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 
-    private void init() {
-        this.snowList = new ArrayList<>();
-        this.snowBasicCount = DEFAULT_SNOW_BASIC_COUNT;
-        this.dropAverageDuration = DEFAULT_DROP_AVERAGE_DURATION;
+    private void init(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SnowEffectFrameLayout);
+        this.snowBasicCount = typedArray.getInteger(R.styleable.SnowEffectFrameLayout_snowBasicCount, DEFAULT_SNOW_BASIC_COUNT);
+        this.dropAverageDuration = typedArray.getInteger(R.styleable.SnowEffectFrameLayout_dropAverageDuration, DEFAULT_DROP_AVERAGE_DURATION);
         this.dropFrequency = DEFAULT_DROP_FREQUENCY;
 
+        this.snowList = new ArrayList<>();
         if ((this.snowList == null || this.snowList.size() == 0)) {
             this.snowList.add(ContextCompat.getDrawable(this.getContext(), R.drawable.snow));
         }
@@ -123,6 +110,8 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
             this.addView(snow, 0);
             this.snowPool.release(snow);
         }
+
+        RandomTool.setSeed(10);
     }
 
     private void cleanSnowPool() {
@@ -150,6 +139,19 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
         }
 
         return snow;
+    }
+
+    private void launchAnim() {
+        Log.i(TAG, "snowBasicCount: " + this.snowBasicCount);
+        Log.i(TAG, "dropAverageDuration: " + this.dropAverageDuration);
+        Log.i(TAG, "dropFrequency: " + this.dropFrequency);
+
+        this.windowHeight = this.getHeight();
+
+        ImageView snow;
+        while (((snow = this.snowPool.acquire()) != null)) {
+            this.startDropAnimationForSingleSnow(snow);
+        }
     }
 
     private void startDropAnimationForSingleSnow(final ImageView snow) {

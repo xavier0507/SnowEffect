@@ -117,8 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String dropDuration = this.dropAverageDurationEdit.getText().toString().trim();
 
         if (TextUtils.isEmpty(snowBasicCount) || TextUtils.isEmpty(dropDuration)) {
-            Toast.makeText(this, "請輸入參數！", Toast.LENGTH_LONG).show();
-            return;
+            this.snowEffectFrameLayout.startEffect();
         } else {
             this.snowEffectFrameLayout.setSnowBasicCount(Integer.parseInt(snowBasicCount));
             this.snowEffectFrameLayout.setDropAverageDuration(Integer.parseInt(dropDuration));
