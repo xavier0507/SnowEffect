@@ -10,7 +10,10 @@ import android.support.v4.util.Pools;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
@@ -27,15 +30,17 @@ import java.util.List;
 public class SnowEffectFrameLayout extends PercentFrameLayout {
     private final String TAG = this.getClass().getSimpleName();
 
-    private static final int DEFAULT_SNOW_BASIC_COUNT = 20;
+    private static final int DEFAULT_SNOW_BASIC_COUNT = 10;
     private static final int DEFAULT_DROP_AVERAGE_DURATION = 18000;
     private static final int DEFAULT_DROP_FREQUENCY = 4000;
+    private static final boolean DEFAULT_IS_ROTATION = false;
     private static final float RELATIVE_DROP_DURATION_OFFSET = 0.55F;
     private static int SNOW_BASIC_SIZE;
 
     private int snowBasicCount;
     private int dropAverageDuration;
     private int dropFrequency;
+    private boolean isRotation;
 
     private List<Drawable> snowList;
     private Pools.SynchronizedPool<ImageView> snowPool;
@@ -74,6 +79,10 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
         this.dropAverageDuration = dropAverageDuration;
     }
 
+    public void setRotation(boolean isRotation) {
+        this.isRotation = isRotation;
+    }
+
     public void startEffect() {
         this.initSnowPool();
         this.launchAnim();
@@ -87,6 +96,7 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SnowEffectFrameLayout);
         this.snowBasicCount = typedArray.getInteger(R.styleable.SnowEffectFrameLayout_snowBasicCount, DEFAULT_SNOW_BASIC_COUNT);
         this.dropAverageDuration = typedArray.getInteger(R.styleable.SnowEffectFrameLayout_dropAverageDuration, DEFAULT_DROP_AVERAGE_DURATION);
+        this.isRotation = typedArray.getBoolean(R.styleable.SnowEffectFrameLayout_isRotation, DEFAULT_IS_ROTATION);
         this.dropFrequency = DEFAULT_DROP_FREQUENCY;
 
         this.snowList = new ArrayList<>();
@@ -145,6 +155,7 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
         Log.i(TAG, "snowBasicCount: " + this.snowBasicCount);
         Log.i(TAG, "dropAverageDuration: " + this.dropAverageDuration);
         Log.i(TAG, "dropFrequency: " + this.dropFrequency);
+        Log.i(TAG, "isRotation: " + this.isRotation);
 
         this.windowHeight = this.getHeight();
 
@@ -156,13 +167,28 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
 
     private void startDropAnimationForSingleSnow(final ImageView snow) {
         final int currentDuration = (int) (this.dropAverageDuration * RandomTool.floatInRange(1, RELATIVE_DROP_DURATION_OFFSET));
+
+        final AnimationSet animationSet = new AnimationSet(false);
         final TranslateAnimation translateAnimation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0,
                 Animation.RELATIVE_TO_SELF, RandomTool.floatInRange(0, 5),
                 Animation.RELATIVE_TO_PARENT, 0,
                 Animation.ABSOLUTE, this.windowHeight);
-        translateAnimation.setDuration(currentDuration);
-        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+
+        if (this.isRotation) {
+            final RotateAnimation rotateAnimation = new RotateAnimation(
+                    0,
+                    RandomTool.floatInRange(0, 360),
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f);
+            animationSet.addAnimation(rotateAnimation);
+        }
+
+        animationSet.addAnimation(translateAnimation);
+        animationSet.setDuration(currentDuration);
+        animationSet.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
@@ -176,35 +202,7 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        snow.startAnimation(translateAnimation);
 
-//        final RotateAnimation rotateAnimation = new RotateAnimation(
-//                0,
-//                RandomTool.floatInRange(0, 360),
-//                Animation.RELATIVE_TO_SELF,
-//                0.5f,
-//                Animation.RELATIVE_TO_SELF,
-//                0.5f);
-
-//        final AnimationSet animationSet = new AnimationSet(false);
-//        animationSet.addAnimation(rotateAnimation);
-//        animationSet.addAnimation(translateAnimation);
-//        animationSet.setDuration(currentDuration);
-//        animationSet.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                snowPool.release(snow);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//            }
-//        });
-//
-//        snow.startAnimation(animationSet);
+        snow.startAnimation(animationSet);
     }
 }

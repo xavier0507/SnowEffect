@@ -5,17 +5,23 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.xy.snoweffect.R;
 import com.xy.snoweffect.view.SnowEffectFrameLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
     private SnowEffectFrameLayout snowEffectFrameLayout;
 
     private EditText snowBasicCountEdit;
     private EditText dropAverageDurationEdit;
+    private RadioGroup rotationRadioGroup;
+    private RadioButton yesRadio;
+    private RadioButton noRadio;
 
     private Button cleanParamsButton;
     private Button startSakuraAnimButton;
@@ -82,11 +88,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.radio_yes:
+                this.snowEffectFrameLayout.setRotation(true);
+                break;
+
+            case R.id.radio_no:
+                this.snowEffectFrameLayout.setRotation(false);
+                break;
+        }
+    }
+
     private void findUIs() {
         this.snowEffectFrameLayout = (SnowEffectFrameLayout) this.findViewById(R.id.activity_main);
 
         this.snowBasicCountEdit = (EditText) this.findViewById(R.id.edit_snow_basic_count);
         this.dropAverageDurationEdit = (EditText) this.findViewById(R.id.edit_drop_duration);
+        this.rotationRadioGroup = (RadioGroup) this.findViewById(R.id.radio_group_is_rotation);
+        this.yesRadio = (RadioButton) this.findViewById(R.id.radio_yes);
+        this.noRadio = (RadioButton) this.findViewById(R.id.radio_no);
 
         this.cleanParamsButton = (Button) this.findViewById(R.id.button_clean);
         this.startSakuraAnimButton = (Button) this.findViewById(R.id.button_start_sakura_anim);
@@ -98,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void addEvents() {
+        this.rotationRadioGroup.setOnCheckedChangeListener(this);
         this.cleanParamsButton.setOnClickListener(this);
         this.startSakuraAnimButton.setOnClickListener(this);
         this.startSnowAnimButton.setOnClickListener(this);
@@ -110,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void cleanParams() {
         this.snowBasicCountEdit.setText("");
         this.dropAverageDurationEdit.setText("");
+        this.noRadio.setChecked(true);
+        this.yesRadio.setChecked(false);
     }
 
     private void launchAnim() {

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.xy.snoweffect.view.SnowEffectFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_FFFFFFFF"
-    app:snowBasicCount="30"
     app:dropAverageDuration="20000"
+    app:isRotation="false"
+    app:snowBasicCount="5"
     tools:context="com.xy.snoweffect.activity.MainActivity">
 
     <LinearLayout
@@ -61,13 +62,48 @@
                     android:hint="時間為ms(18000)"
                     android:inputType="number" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="是否旋轉："
+                    android:textColor="@color/color_FF000000" />
+
+                <RadioGroup
+                    android:id="@+id/radio_group_is_rotation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radio_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="否" />
+
+                    <RadioButton
+                        android:id="@+id/radio_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:text="是" />
+                </RadioGroup>
+            </LinearLayout>
         </LinearLayout>
 
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:stretchColumns="*">
 
             <TableRow>

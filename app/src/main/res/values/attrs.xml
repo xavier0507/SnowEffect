@@ -3,5 +3,6 @@
     <declare-styleable name="SnowEffectFrameLayout">
         <attr name="snowBasicCount" format="integer" />
         <attr name="dropAverageDuration" format="integer" />
+        <attr name="isRotation" format="boolean" />
     </declare-styleable>
 </resources>
