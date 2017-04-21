@@ -102,6 +102,8 @@ public class SnowEffectFrameLayout extends PercentFrameLayout {
         if ((this.snowList == null || this.snowList.size() == 0)) {
             this.snowList.add(ContextCompat.getDrawable(this.getContext(), R.drawable.snow));
         }
+
+        typedArray.recycle();
     }
 
     private void initSnowPool() {
